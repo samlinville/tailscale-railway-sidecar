@@ -2,11 +2,8 @@ FROM golang:1.21-alpine AS builder
 
 WORKDIR /app
 
-COPY go.mod ./
-RUN go mod download && go mod tidy
-
-COPY main.go ./
-RUN CGO_ENABLED=0 go build -o /tailscale-proxy .
+COPY go.mod main.go ./
+RUN go mod tidy && CGO_ENABLED=0 go build -o /tailscale-proxy .
 
 FROM alpine:latest
 
